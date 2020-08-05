@@ -8,11 +8,14 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class HealthCheckIT {
 	@Test
 	public void healthCheck() throws MalformedURLException {
-		WebDriver driver = new ChromeDriver();
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--headless");
+		WebDriver driver = new ChromeDriver(options);		
 //		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 //		WebDriver driver = new RemoteWebDriver(new URL("http://10.0.2.15:4444/wd/hub"), capabilities);
 		try {
