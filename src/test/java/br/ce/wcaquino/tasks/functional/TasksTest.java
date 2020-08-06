@@ -15,7 +15,8 @@ public class TasksTest {
 		options.addArguments("--headless");
 		WebDriver driver = new ChromeDriver(options);
 		// DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-		// WebDriver driver = new RemoteWebDriver(new URL("http://10.0.2.15:4444/wd/hub"), capabilities);
+		// WebDriver driver = new RemoteWebDriver(new
+		// URL("http://10.0.2.15:4444/wd/hub"), capabilities);
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.navigate().to("http://10.0.2.15:8001/tasks/");
 		return driver;
@@ -37,14 +38,31 @@ public class TasksTest {
 	}
 
 	@Test
+	public void shouldRemoveATaskWithSuccess() throws Exception {
+		WebDriver driver = setupDriver();
+		try {
+			driver.findElement(By.id("addTodo")).click();
+			driver.findElement(By.id("task")).sendKeys("task description");
+			driver.findElement(By.id("dueDate")).sendKeys("10/10/2030");
+			driver.findElement(By.id("saveButton")).click();
+
+			Assert.assertEquals("Success!", driver.findElement(By.id("message")).getText());
+		} finally {
+			driver.quit();
+		}
+	}
+
+	@Test
 	public void shouldNotBeenPossibleToSaveTaskWithoutDescription() throws Exception {
 		WebDriver driver = setupDriver();
 		try {
 			driver.findElement(By.id("addTodo")).click();
 			driver.findElement(By.id("dueDate")).sendKeys("10/10/2010");
 			driver.findElement(By.id("saveButton")).click();
+			Assert.assertEquals("Success!", driver.findElement(By.id("message")).getText());
 
-			Assert.assertEquals("Fill the task description", driver.findElement(By.id("message")).getText());
+			driver.findElement(By.xpath("//a[@class='btn btn-outline-danger btn-sm']")).click();
+			Assert.assertEquals("Success!", driver.findElement(By.id("message")).getText());
 		} finally {
 			driver.quit();
 		}
